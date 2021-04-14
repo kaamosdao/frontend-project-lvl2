@@ -1,7 +1,6 @@
-install:
+setup:
 	 npm install
-gendiff:
-	bin/gendiff.js
+	 sudo npm link
 publish:
 	npm publish --dry-run
 lint:
