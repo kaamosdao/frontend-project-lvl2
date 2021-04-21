@@ -3,12 +3,18 @@ import path from 'path';
 import _ from 'lodash';
 
 const getData = (filepath) => JSON.parse(fs.readFileSync(filepath));
-const getExtension = (filepath) => path.parse(filepath).ext.toLocaleLowerCase();
+
+const isCorrectExtension = (file1, file2, ext) => {
+  const fileExt1 = path.parse(file1).ext.toLocaleLowerCase();
+  const fileExt2 = path.parse(file2).ext.toLocaleLowerCase();
+
+  if (fileExt1 !== ext || fileExt2 !== ext) {
+    throw new Error(`Incorrect file extension, expected ${ext}`);
+  }
+};
 
 const genDiff = (filepath1, filepath2) => {
-  if (getExtension(filepath1) !== '.json' || getExtension(filepath2) !== '.json') {
-    throw new Error('Incorrect file extension, expected ".json"');
-  }
+  isCorrectExtension(filepath1, filepath2, '.json');
 
   const initialData = getData(filepath1);
   const changedData = getData(filepath2);
@@ -25,25 +31,20 @@ const genDiff = (filepath1, filepath2) => {
     if (hasKeyInitialData && hasKeyChangedData) {
       if (currentValue === initialData[currentKey]) {
         acc.push([`  ${currentKey}`, currentValue]);
-        return acc;
+      } else {
+        acc.push([`- ${currentKey}`, initialData[currentKey]]);
+        acc.push([`+ ${currentKey}`, currentValue]);
       }
-
+    } else if (hasKeyInitialData && !hasKeyChangedData) {
       acc.push([`- ${currentKey}`, initialData[currentKey]]);
+    } else {
       acc.push([`+ ${currentKey}`, currentValue]);
-      return acc;
     }
 
-    if (hasKeyInitialData && !hasKeyChangedData) {
-      acc.push([`- ${currentKey}`, initialData[currentKey]]);
-      return acc;
-    }
-
-    acc.push([`+ ${currentKey}`, currentValue]);
     return acc;
   }, []);
 
-  const result = _.fromPairs(comparedData);
-  const formattedData = JSON.stringify(result, null, '  ');
+  const formattedData = JSON.stringify(_.fromPairs(comparedData), null, '  ');
 
   return formattedData.replace(/['",]/g, '');
 };
