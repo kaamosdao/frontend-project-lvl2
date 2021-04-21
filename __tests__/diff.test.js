@@ -11,24 +11,24 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 
 describe('files comparison', () => {
   test('different files comparison', () => {
-    const filepath1 = '/home/kaamosdao/frontend-project-lvl2/__fixtures__/file1.json';
-    const filepath2 = '__fixtures__/file2.json';
+    const filepath1 = getFixturePath('file1.json');
+    const filepath2 = getFixturePath('file2.json');
     const result = readFile('file1Andfile2Comparison.txt');
 
     expect(genDiff(filepath1, filepath2)).toEqual(result);
   });
 
   test('empty files comparison', () => {
-    const filepath3 = '/home/kaamosdao/frontend-project-lvl2/__fixtures__/file3.json';
-    const filepath4 = '__fixtures__/file4.json';
+    const filepath3 = getFixturePath('file3.json');
+    const filepath4 = getFixturePath('file4.json');
 
     expect(genDiff(filepath3, filepath4)).toEqual('{}');
   });
 });
 
 test('throw Error with incorrect extention', () => {
-  const filepath1 = '/home/kaamosdao/frontend-project-lvl2/__fixtures__/file1.jso';
-  const filepath2 = '__fixtures__/file2.json';
+  const filepath1 = getFixturePath('file1.jso');
+  const filepath2 = getFixturePath('file2.json');
   expect(() => {
     genDiff(filepath1, filepath2);
   }).toThrow('Incorrect file extension, expected .json');

@@ -23,8 +23,7 @@ const genDiff = (filepath1, filepath2) => {
   const sortedData = _(unitedData).toPairs().sortBy(0).value();
 
   const comparedData = sortedData.reduce((acc, data) => {
-    const currentKey = data[0];
-    const currentValue = data[1];
+    const [currentKey, currentValue] = data;
     const hasKeyInitialData = _.has(initialData, currentKey) === true;
     const hasKeyChangedData = _.has(changedData, currentKey) === true;
 
