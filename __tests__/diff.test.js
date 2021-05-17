@@ -2,7 +2,7 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import genDiff from '../src/diff.js';
+import genDiff from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -49,32 +49,48 @@ beforeAll(() => {
 
 describe('files comparison', () => {
   test('different files comparison', () => {
-    expect(genDiff(filepath1, filepath2)).toEqual(result);
-    expect(genDiff(filepathYaml1, filepathYml2)).toEqual(result);
-    expect(genDiff(filepathYml1, filepathYml2)).toEqual(result);
-    expect(genDiff(filepathYaml1, filepathYaml2)).toEqual(result);
-    expect(genDiff(filepathYaml1, filepath2)).toEqual(result);
-    expect(genDiff(filepathYml1, filepath2)).toEqual(result);
+    expect(genDiff(filepath1, filepath2, 'stylish')).toEqual(result);
+    expect(genDiff(filepathYaml1, filepathYml2, 'stylish')).toEqual(result);
+    expect(genDiff(filepathYml1, filepathYml2, 'stylish')).toEqual(result);
+    expect(genDiff(filepathYaml1, filepathYaml2, 'stylish')).toEqual(result);
+    expect(genDiff(filepathYaml1, filepath2, 'stylish')).toEqual(result);
+    expect(genDiff(filepathYml1, filepath2, 'stylish')).toEqual(result);
   });
 
   test('empty files comparison', () => {
-    expect(genDiff(filepath3, filepath4)).toEqual('{}');
-    expect(genDiff(filepathYml3, filepathYaml4)).toEqual('{}');
-    expect(genDiff(filepathYaml3, filepathYaml4)).toEqual('{}');
-    expect(genDiff(filepath3, filepathYml4)).toEqual('{}');
+    expect(genDiff(filepath3, filepath4, 'stylish')).toEqual('{}');
+    expect(genDiff(filepathYml3, filepathYaml4, 'stylish')).toEqual('{}');
+    expect(genDiff(filepathYaml3, filepathYaml4, 'stylish')).toEqual('{}');
+    expect(genDiff(filepath3, filepathYml4, 'stylish')).toEqual('{}');
   });
 });
 
-test('throw Error with incorrect extention', () => {
-  expect(() => {
-    genDiff(filepath1, filepathWrong);
-  }).toThrow('Incorrect file extension, expected .json/.yml/.yaml');
+describe('Errors', () => {
+  test('throw Error with incorrect extension', () => {
+    expect(() => {
+      genDiff(filepath1, filepathWrong);
+    }).toThrow('Incorrect file extension, expected .json/.yml/.yaml');
 
-  expect(() => {
-    genDiff(filepathYaml1, filepathWrong);
-  }).toThrow('Incorrect file extension, expected .json/.yml/.yaml');
+    expect(() => {
+      genDiff(filepathYaml1, filepathWrong);
+    }).toThrow('Incorrect file extension, expected .json/.yml/.yaml');
 
-  expect(() => {
-    genDiff(filepathWrong, filepathYml1);
-  }).toThrow('Incorrect file extension, expected .json/.yml/.yaml');
+    expect(() => {
+      genDiff(filepathWrong, filepathYml1);
+    }).toThrow('Incorrect file extension, expected .json/.yml/.yaml');
+  });
+
+  test('throw Error with incorrect formmat', () => {
+    expect(() => {
+      genDiff(filepath1, filepath2, '');
+    }).toThrow('unknown output format');
+
+    expect(() => {
+      genDiff(filepathYaml1, filepathYml2, '');
+    }).toThrow('unknown output format');
+
+    expect(() => {
+      genDiff(filepathYml1, filepath2, '');
+    }).toThrow('unknown output format');
+  });
 });

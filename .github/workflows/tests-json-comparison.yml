@@ -1,4 +1,4 @@
-name: genDiff() json comparison CI
+name: genDiff() comparison CI
 
 on:
   - push
