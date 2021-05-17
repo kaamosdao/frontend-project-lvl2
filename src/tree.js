@@ -9,9 +9,7 @@ const createDiff = (initialData, changedData) => {
     const hasKeyInitialData = _.has(initialData, currentKey) === true;
     const hasKeyChangedData = _.has(changedData, currentKey) === true;
     if (hasKeyInitialData && !hasKeyChangedData) {
-      return {
-        key: currentKey, value: currentValue, status: 'deleted',
-      };
+      return { key: currentKey, value: currentValue, status: 'deleted' };
     }
 
     if (!hasKeyInitialData && hasKeyChangedData) {
@@ -21,24 +19,15 @@ const createDiff = (initialData, changedData) => {
     }
 
     if (currentValue === initialData[currentKey]) {
-      return {
-        key: currentKey, value: currentValue, status: 'unchanged',
-      };
+      return { key: currentKey, value: currentValue, status: 'unchanged' };
     }
 
     if (_.isObject(currentValue) && _.isObject(initialData[currentKey])) {
-      return {
-        key: currentKey,
-        status: 'nested',
-        children: createDiff(initialData[currentKey], currentValue),
-      };
+      return { key: currentKey, status: 'nested', children: createDiff(initialData[currentKey], currentValue) };
     }
 
     return {
-      key: currentKey,
-      value: currentValue,
-      oldValue: initialData[currentKey],
-      status: 'changed',
+      key: currentKey, value: currentValue, oldValue: initialData[currentKey], status: 'changed',
     };
   });
 };
