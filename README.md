@@ -1,6 +1,6 @@
 ## genDiff
 This [repository](https://github.com/kaamosdao/frontend-project-lvl1) is created by Alexander Demidov.
-This package will help you to compare two .json / .yml / .yaml files and shows a difference in a various formats (stylish, plain).
+This package will help you to compare two .json / .yml / .yaml files and shows a difference in a various formats (stylish, plain, json).
 #
 ```sh
 Usage: gendiff [options] <filepath1> <filepath2>
@@ -29,3 +29,5 @@ $ make setup
 
 ### Example 'plain' output format:
 [![asciicast](https://asciinema.org/a/15eVuuZ35OSlKcaymwINLSWzH.svg)](https://asciinema.org/a/15eVuuZ35OSlKcaymwINLSWzH)
+### Example 'json' output format:
+[![asciicast](https://asciinema.org/a/ZbpeO6FisgOoxeWKp1MZO4QFK.svg)](https://asciinema.org/a/ZbpeO6FisgOoxeWKp1MZO4QFK)

@@ -27,6 +27,7 @@ let filepathYml4;
 let filepathWrong;
 let resultStylish;
 let resultPlain;
+let resultJson;
 
 beforeAll(() => {
   filepath1 = getFixturePath('file1.json');
@@ -47,6 +48,7 @@ beforeAll(() => {
   filepathWrong = getFixturePath('wrongExtension.txt');
   resultStylish = readFile('file1Andfile2Comparison.txt');
   resultPlain = readFile('file1Andfile2Comparison plain.txt');
+  resultJson = readFile('file1Andfile2Comparison json.txt');
 });
 
 describe('files comparison', () => {
@@ -80,6 +82,22 @@ describe('files comparison', () => {
     expect(genDiff(filepathYml3, filepathYaml4, 'plain')).toEqual('empty files');
     expect(genDiff(filepathYaml3, filepathYaml4, 'plain')).toEqual('empty files');
     expect(genDiff(filepath3, filepathYml4, 'plain')).toEqual('empty files');
+  });
+
+  test('different files json comparison', () => {
+    expect(genDiff(filepath1, filepath2, 'json')).toEqual(resultJson);
+    expect(genDiff(filepathYaml1, filepathYml2, 'json')).toEqual(resultJson);
+    expect(genDiff(filepathYml1, filepathYml2, 'json')).toEqual(resultJson);
+    expect(genDiff(filepathYaml1, filepathYaml2, 'json')).toEqual(resultJson);
+    expect(genDiff(filepathYaml1, filepath2, 'json')).toEqual(resultJson);
+    expect(genDiff(filepathYml1, filepath2, 'json')).toEqual(resultJson);
+  });
+
+  test('empty files json comparison', () => {
+    expect(genDiff(filepath3, filepath4, 'json')).toEqual('empty files');
+    expect(genDiff(filepathYml3, filepathYaml4, 'json')).toEqual('empty files');
+    expect(genDiff(filepathYaml3, filepathYaml4, 'json')).toEqual('empty files');
+    expect(genDiff(filepath3, filepathYml4, 'json')).toEqual('empty files');
   });
 });
 
