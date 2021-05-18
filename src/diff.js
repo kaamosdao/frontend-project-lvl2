@@ -1,14 +1,14 @@
 import parse from './parsers.js';
 import createDiff from './tree.js';
-import makeStylish from './formatter/stylish.js';
+import selectFormatter from './formatter/index.js';
 
 const genDiff = (filepath1, filepath2, format) => {
   const [initialData, changedData] = parse(filepath1, filepath2);
   const comparedData = createDiff(initialData, changedData);
-  if (format !== 'stylish') {
-    throw new Error('unknown output format');
+  if (comparedData.length === 0) {
+    return 'empty files';
   }
-  return makeStylish(comparedData);
+  return selectFormatter(comparedData, format);
 };
 
 export default genDiff;

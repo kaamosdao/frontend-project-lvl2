@@ -25,7 +25,8 @@ let filepathYml3;
 let filepathYml4;
 
 let filepathWrong;
-let result;
+let resultStylish;
+let resultPlain;
 
 beforeAll(() => {
   filepath1 = getFixturePath('file1.json');
@@ -44,24 +45,41 @@ beforeAll(() => {
   filepathYml4 = getFixturePath('file4.yml');
 
   filepathWrong = getFixturePath('wrongExtension.txt');
-  result = readFile('file1Andfile2Comparison.txt');
+  resultStylish = readFile('file1Andfile2Comparison.txt');
+  resultPlain = readFile('file1Andfile2Comparison plain.txt');
 });
 
 describe('files comparison', () => {
-  test('different files comparison', () => {
-    expect(genDiff(filepath1, filepath2, 'stylish')).toEqual(result);
-    expect(genDiff(filepathYaml1, filepathYml2, 'stylish')).toEqual(result);
-    expect(genDiff(filepathYml1, filepathYml2, 'stylish')).toEqual(result);
-    expect(genDiff(filepathYaml1, filepathYaml2, 'stylish')).toEqual(result);
-    expect(genDiff(filepathYaml1, filepath2, 'stylish')).toEqual(result);
-    expect(genDiff(filepathYml1, filepath2, 'stylish')).toEqual(result);
+  test('different files stylish comparison', () => {
+    expect(genDiff(filepath1, filepath2, 'stylish')).toEqual(resultStylish);
+    expect(genDiff(filepathYaml1, filepathYml2, 'stylish')).toEqual(resultStylish);
+    expect(genDiff(filepathYml1, filepathYml2, 'stylish')).toEqual(resultStylish);
+    expect(genDiff(filepathYaml1, filepathYaml2, 'stylish')).toEqual(resultStylish);
+    expect(genDiff(filepathYaml1, filepath2, 'stylish')).toEqual(resultStylish);
+    expect(genDiff(filepathYml1, filepath2, 'stylish')).toEqual(resultStylish);
   });
 
-  test('empty files comparison', () => {
-    expect(genDiff(filepath3, filepath4, 'stylish')).toEqual('{}');
-    expect(genDiff(filepathYml3, filepathYaml4, 'stylish')).toEqual('{}');
-    expect(genDiff(filepathYaml3, filepathYaml4, 'stylish')).toEqual('{}');
-    expect(genDiff(filepath3, filepathYml4, 'stylish')).toEqual('{}');
+  test('empty files stylish comparison', () => {
+    expect(genDiff(filepath3, filepath4, 'stylish')).toEqual('empty files');
+    expect(genDiff(filepathYml3, filepathYaml4, 'stylish')).toEqual('empty files');
+    expect(genDiff(filepathYaml3, filepathYaml4, 'stylish')).toEqual('empty files');
+    expect(genDiff(filepath3, filepathYml4, 'stylish')).toEqual('empty files');
+  });
+
+  test('different files plain comparison', () => {
+    expect(genDiff(filepath1, filepath2, 'plain')).toEqual(resultPlain);
+    expect(genDiff(filepathYaml1, filepathYml2, 'plain')).toEqual(resultPlain);
+    expect(genDiff(filepathYml1, filepathYml2, 'plain')).toEqual(resultPlain);
+    expect(genDiff(filepathYaml1, filepathYaml2, 'plain')).toEqual(resultPlain);
+    expect(genDiff(filepathYaml1, filepath2, 'plain')).toEqual(resultPlain);
+    expect(genDiff(filepathYml1, filepath2, 'plain')).toEqual(resultPlain);
+  });
+
+  test('empty files plain comparison', () => {
+    expect(genDiff(filepath3, filepath4, 'plain')).toEqual('empty files');
+    expect(genDiff(filepathYml3, filepathYaml4, 'plain')).toEqual('empty files');
+    expect(genDiff(filepathYaml3, filepathYaml4, 'plain')).toEqual('empty files');
+    expect(genDiff(filepath3, filepathYml4, 'plain')).toEqual('empty files');
   });
 });
 
@@ -80,17 +98,17 @@ describe('Errors', () => {
     }).toThrow('Incorrect file extension, expected .json/.yml/.yaml');
   });
 
-  test('throw Error with incorrect formmat', () => {
+  test('throw Error with incorrect format', () => {
     expect(() => {
-      genDiff(filepath1, filepath2, '');
-    }).toThrow('unknown output format');
+      genDiff(filepath1, filepath2, 'text');
+    }).toThrow('unknown text format');
 
     expect(() => {
-      genDiff(filepathYaml1, filepathYml2, '');
-    }).toThrow('unknown output format');
+      genDiff(filepathYaml1, filepathYml2, 'text');
+    }).toThrow('unknown text format');
 
     expect(() => {
-      genDiff(filepathYml1, filepath2, '');
-    }).toThrow('unknown output format');
+      genDiff(filepathYml1, filepath2, 'text');
+    }).toThrow('unknown text format');
   });
 });

@@ -14,10 +14,6 @@ const checkValue = (value, depth) => {
 };
 
 const makeStylish = (data) => {
-  if (data.length === 0) {
-    return '{}';
-  }
-
   const createPattern = (currentData, depth) => {
     const result = currentData.map((item) => {
       if (item.status === 'deleted') {
@@ -26,7 +22,7 @@ const makeStylish = (data) => {
       if (item.status === 'added') {
         return `${' '.repeat(depth + 2)}+ ${item.key}: ${checkValue(item.value, depth)}`;
       }
-      if (currentData.status === 'unchanged') {
+      if (item.status === 'unchanged') {
         return `${' '.repeat(depth + 2)}  ${item.key}: ${checkValue(item.value, depth)}`;
       }
       if (item.status === 'changed') {
