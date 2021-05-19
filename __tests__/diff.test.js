@@ -9,47 +9,25 @@ const __dirname = dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
-let filepath1;
-let filepath2;
-let filepath3;
-let filepath4;
+const filepath1 = getFixturePath('file1.json');
+const filepath2 = getFixturePath('file2.json');
+const filepath3 = getFixturePath('file3.json');
+const filepath4 = getFixturePath('file4.json');
 
-let filepathYaml1;
-let filepathYaml2;
-let filepathYaml3;
-let filepathYaml4;
+const filepathYaml1 = getFixturePath('file1.yaml');
+const filepathYaml2 = getFixturePath('file2.yaml');
+const filepathYaml3 = getFixturePath('file3.yaml');
+const filepathYaml4 = getFixturePath('file4.yaml');
 
-let filepathYml1;
-let filepathYml2;
-let filepathYml3;
-let filepathYml4;
+const filepathYml1 = getFixturePath('file1.yml');
+const filepathYml2 = getFixturePath('file2.yml');
+const filepathYml3 = getFixturePath('file3.yml');
+const filepathYml4 = getFixturePath('file4.yml');
 
-let filepathWrong;
-let resultStylish;
-let resultPlain;
-let resultJson;
-
-beforeAll(() => {
-  filepath1 = getFixturePath('file1.json');
-  filepath2 = getFixturePath('file2.json');
-  filepath3 = getFixturePath('file3.json');
-  filepath4 = getFixturePath('file4.json');
-
-  filepathYaml1 = getFixturePath('file1.yaml');
-  filepathYaml2 = getFixturePath('file2.yaml');
-  filepathYaml3 = getFixturePath('file3.yaml');
-  filepathYaml4 = getFixturePath('file4.yaml');
-
-  filepathYml1 = getFixturePath('file1.yml');
-  filepathYml2 = getFixturePath('file2.yml');
-  filepathYml3 = getFixturePath('file3.yml');
-  filepathYml4 = getFixturePath('file4.yml');
-
-  filepathWrong = getFixturePath('wrongExtension.txt');
-  resultStylish = readFile('file1Andfile2Comparison.txt');
-  resultPlain = readFile('file1Andfile2Comparison plain.txt');
-  resultJson = readFile('file1Andfile2Comparison json.txt');
-});
+const filepathWrong = getFixturePath('wrongExtension.txt');
+const resultStylish = readFile('file1Andfile2Comparison.txt');
+const resultPlain = readFile('file1Andfile2Comparison plain.txt');
+const resultJson = readFile('file1Andfile2Comparison json.txt');
 
 describe('files comparison', () => {
   test('different files stylish comparison', () => {
