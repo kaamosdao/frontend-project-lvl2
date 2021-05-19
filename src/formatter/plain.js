@@ -4,7 +4,7 @@ const checkValue = (value) => {
   if (_.isObject(value)) {
     return '[complex value]';
   }
-  if (_.isBoolean(value) || _.isNull(value)) {
+  if (_.isBoolean(value) || _.isNull(value) || _.isNumber(value)) {
     return value;
   }
   return `'${value}'`;
