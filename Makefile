@@ -1,3 +1,5 @@
+install:
+	npm install
 setup:
 	 npm install
 	 sudo npm link

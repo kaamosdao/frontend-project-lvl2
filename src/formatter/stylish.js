@@ -16,22 +16,18 @@ const checkValue = (value, depth) => {
 const makeStylish = (data) => {
   const createPattern = (currentData, depth) => {
     const result = currentData.map((item) => {
-      if (item.status === 'deleted') {
-        return `${' '.repeat(depth + 2)}- ${item.key}: ${checkValue(item.value, depth)}`;
+      switch (item.status) {
+        case 'deleted':
+          return `${' '.repeat(depth + 2)}- ${item.key}: ${checkValue(item.value, depth)}`;
+        case 'added':
+          return `${' '.repeat(depth + 2)}+ ${item.key}: ${checkValue(item.value, depth)}`;
+        case 'changed':
+          return `${' '.repeat(depth + 2)}- ${item.key}: ${checkValue(item.oldValue, depth)}\n${' '.repeat(depth + 2)}+ ${item.key}: ${checkValue(item.value, depth)}`;
+        case 'nested':
+          return `${' '.repeat(depth + 2)}  ${item.key}: {\n${createPattern(item.children, depth + 4)}\n${' '.repeat(depth + 4)}}`;
+        default:
+          return `${' '.repeat(depth + 2)}  ${item.key}: ${checkValue(item.value, depth)}`;
       }
-      if (item.status === 'added') {
-        return `${' '.repeat(depth + 2)}+ ${item.key}: ${checkValue(item.value, depth)}`;
-      }
-      if (item.status === 'unchanged') {
-        return `${' '.repeat(depth + 2)}  ${item.key}: ${checkValue(item.value, depth)}`;
-      }
-      if (item.status === 'changed') {
-        return `${' '.repeat(depth + 2)}- ${item.key}: ${checkValue(item.oldValue, depth)}\n${' '.repeat(depth + 2)}+ ${item.key}: ${checkValue(item.value, depth)}`;
-      }
-      if (item.status === 'nested') {
-        return `${' '.repeat(depth + 2)}  ${item.key}: {\n${createPattern(item.children, depth + 4)}\n${' '.repeat(depth + 4)}}`;
-      }
-      return `${' '.repeat(depth + 2)}  ${item.key}: ${checkValue(item.value, depth)}`;
     });
     return result.join('\n');
   };

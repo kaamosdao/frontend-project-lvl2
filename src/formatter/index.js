@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import makeStylish from './stylish.js';
 import makePlain from './plain.js';
 import makeJson from './json.js';
@@ -9,11 +8,11 @@ const formatters = {
   json: makeJson,
 };
 
-const selectFormatter = (data, format) => {
-  if (!_.has(formatters, format)) {
+const formatData = (data, format) => {
+  if (!(format in formatters)) {
     throw new Error(`unknown ${format} format`);
   }
   return formatters[format](data);
 };
 
-export default selectFormatter;
+export default formatData;
