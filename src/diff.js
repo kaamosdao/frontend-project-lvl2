@@ -5,15 +5,15 @@ import createDiff from './tree.js';
 import formatData from './formatter/index.js';
 
 const getData = (filePath) => {
-  const formatFile = path.extname(filePath).toLowerCase().slice(1);
-  const dataFile = fs.readFileSync(filePath, 'utf-8');
-  return parse(dataFile, formatFile);
+  const format = path.extname(filePath).toLowerCase().slice(1);
+  const data = fs.readFileSync(filePath, 'utf-8');
+  return parse(data, format);
 };
 
 const genDiff = (filepath1, filepath2, format = 'stylish') => {
-  const initialData = getData(filepath1);
-  const changedData = getData(filepath2);
-  const comparedData = createDiff(initialData, changedData);
+  const data1 = getData(filepath1);
+  const data2 = getData(filepath2);
+  const comparedData = createDiff(data1, data2);
 
   return formatData(comparedData, format);
 };

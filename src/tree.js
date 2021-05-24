@@ -1,27 +1,24 @@
 import _ from 'lodash';
 
-const createDiff = (initialData, changedData) => {
-  const keys = _.union(_.keys(initialData), _.keys(changedData));
+const createDiff = (data1, data2) => {
+  const keys = _.union(Object.keys(data1), Object.keys(data2));
   const sortedKeys = _.sortBy(keys);
 
   return sortedKeys.map((key) => {
-    const hasKeyInitialData = _.has(initialData, key);
-    const hasKeyChangedData = _.has(changedData, key);
-
-    if (!hasKeyInitialData) {
-      return { key, value: changedData[key], status: 'added' };
+    if (!_.has(data1, key)) {
+      return { key, value: data2[key], status: 'added' };
     }
-    if (!hasKeyChangedData) {
-      return { key, value: initialData[key], status: 'deleted' };
+    if (!_.has(data2, key)) {
+      return { key, value: data1[key], status: 'deleted' };
     }
-    if (_.isObject(changedData[key]) && _.isObject(initialData[key])) {
-      return { key, status: 'nested', children: createDiff(initialData[key], changedData[key]) };
+    if (_.isObject(data2[key]) && _.isObject(data1[key])) {
+      return { key, status: 'nested', children: createDiff(data1[key], data2[key]) };
     }
-    if (changedData[key] === initialData[key]) {
-      return { key, value: initialData[key], status: 'unchanged' };
+    if (_.isEqual(data2[key], data1[key])) {
+      return { key, value: data1[key], status: 'unchanged' };
     }
     return {
-      key, value: changedData[key], oldValue: initialData[key], status: 'changed',
+      key, value: data2[key], oldValue: data1[key], status: 'changed',
     };
   });
 };

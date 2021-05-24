@@ -1,16 +1,13 @@
 import _ from 'lodash';
 
-const checkValue = (value, depth) => {
+const formatValue = (value, depth) => {
   if (!_.isObject(value)) {
     return value;
   }
-
-  const sortedValue = _(value).toPairs().sortBy(0).value();
-  const values = sortedValue.map((data) => {
-    const [currentKey, currentValue] = data;
-    return `${' '.repeat(depth + 6)}  ${currentKey}: ${checkValue(currentValue, depth + 4)}`;
-  });
-  return `{\n${values.join('\n')}\n${' '.repeat(depth + 4)}}`;
+  const keys = Object.keys(value);
+  const sortedKeys = _.sortBy(keys);
+  const result = sortedKeys.map((key) => `${' '.repeat(depth + 6)}  ${key}: ${formatValue(value[key], depth + 4)}`);
+  return `{\n${result.join('\n')}\n${' '.repeat(depth + 4)}}`;
 };
 
 const makeStylish = (data) => {
@@ -18,15 +15,15 @@ const makeStylish = (data) => {
     const result = currentData.map((item) => {
       switch (item.status) {
         case 'deleted':
-          return `${' '.repeat(depth + 2)}- ${item.key}: ${checkValue(item.value, depth)}`;
+          return `${' '.repeat(depth + 2)}- ${item.key}: ${formatValue(item.value, depth)}`;
         case 'added':
-          return `${' '.repeat(depth + 2)}+ ${item.key}: ${checkValue(item.value, depth)}`;
+          return `${' '.repeat(depth + 2)}+ ${item.key}: ${formatValue(item.value, depth)}`;
         case 'changed':
-          return `${' '.repeat(depth + 2)}- ${item.key}: ${checkValue(item.oldValue, depth)}\n${' '.repeat(depth + 2)}+ ${item.key}: ${checkValue(item.value, depth)}`;
+          return `${' '.repeat(depth + 2)}- ${item.key}: ${formatValue(item.oldValue, depth)}\n${' '.repeat(depth + 2)}+ ${item.key}: ${formatValue(item.value, depth)}`;
         case 'nested':
           return `${' '.repeat(depth + 2)}  ${item.key}: {\n${createPattern(item.children, depth + 4)}\n${' '.repeat(depth + 4)}}`;
         default:
-          return `${' '.repeat(depth + 2)}  ${item.key}: ${checkValue(item.value, depth)}`;
+          return `${' '.repeat(depth + 2)}  ${item.key}: ${formatValue(item.value, depth)}`;
       }
     });
     return result.join('\n');

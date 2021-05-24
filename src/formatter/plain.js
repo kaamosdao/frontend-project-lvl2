@@ -7,7 +7,7 @@ const stringify = (value) => {
   if (_.isString(value)) {
     return `'${value}'`;
   }
-  return value;
+  return String(value);
 };
 
 const makePlain = (data) => {
